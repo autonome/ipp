@@ -71,9 +71,9 @@ export const trimAddress = (address: string) => {
   }
   
   return (
-    '0x' + address.substring(0, 5).toLowerCase() +
+    '0x' + address.substring(2, 6).toLowerCase() +
     '...' +
-    address.substring(address.length - 5).toLowerCase()
+    address.substring(address.length - 4).toLowerCase()
   );
 };
 
