@@ -1,0 +1,27 @@
+
+.main-container {
+  width: 1600px;
+  height: 100vh;
+
+  @media (max-width: 1599px) {
+    width: 1200px;
+  }
+
+  @media (max-width: 1199px) {
+    width: 1024px;
+  }
+
+  height: 100%;
+  display: flex;
+
+  .container {
+    margin: 0 10px;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-bottom: none;
+    height: 100%;
+    width: 70%;
+    height: 100vh;
+    padding: 35px 10px 10px 10px;
+  }
+}

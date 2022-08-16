@@ -1,0 +1,10 @@
+.new-blog-page {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .submit {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

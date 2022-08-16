@@ -1,3 +1,3 @@
-# ipp
-interplanetary publishing platform
-blogging site
+# How to install
+- npm install
+- npm start
