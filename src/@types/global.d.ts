@@ -8,6 +8,8 @@ interface IBlog {
   Body: string;
   Creator: string;
   Followers: string[];
+  CID?: string;
+  Date?: Date;
 }
 
 interface IUser {
@@ -20,4 +22,9 @@ interface IUser {
 interface IDatabase {
   Blogs: string[];
   Users: IUser[];
+}
+
+interface IDatabaseAction {
+  Type: "ADD_BLOG" | "ADD_USER";
+  CID: string;
 }

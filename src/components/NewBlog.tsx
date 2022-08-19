@@ -34,9 +34,9 @@ const NewBlog = (props: INewBlog) => {
     };
 
     dispatch(createBlog(blog)).then(res => {
-      alert('res');
+      console.log({res});
     }, err => {
-      alert('err');
+      console.log({err});
     });
   };
 

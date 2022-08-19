@@ -1,8 +1,10 @@
-import axios from 'axios';
+import axios from "axios";
 
 const api = axios.create({
   params: {},
-  headers: {},
+  headers: {
+    "content-type": "application/json;charset=UTF-8",
+  },
 });
 
 export function sendFormData(url: string, method: string, FD: FormData) {
@@ -10,7 +12,7 @@ export function sendFormData(url: string, method: string, FD: FormData) {
     const XHR = new XMLHttpRequest();
 
     // Define what happens on successful data submission
-    XHR.addEventListener('load', function (event: any) {
+    XHR.addEventListener("load", function (event: any) {
       if (event.target.status >= 200 && event.target.status < 300) {
         resolve(event.target.response);
       } else {
@@ -19,7 +21,7 @@ export function sendFormData(url: string, method: string, FD: FormData) {
     });
 
     // Define what happens in case of error
-    XHR.addEventListener(' error', function (event: any) {
+    XHR.addEventListener(" error", function (event: any) {
       reject(event.target.response);
     });
 

@@ -5,8 +5,8 @@ const initialState = {
   loading: false
 };
 
-export const web3Slice = createSlice({
-  name: 'web3',
+export const viewState = createSlice({
+  name: 'viewState',
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
@@ -18,6 +18,6 @@ export const web3Slice = createSlice({
   },
 });
 
-export const {setLoading} = web3Slice.actions;
+export const {setLoading} = viewState.actions;
 
-export default web3Slice.reducer;
+export default viewState.reducer;

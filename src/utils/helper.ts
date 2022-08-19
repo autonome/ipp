@@ -96,3 +96,15 @@ export function convertTitle(str: string) {
   }
   return res;
 }
+
+export function getW3link(cid: string) {
+  // return `https://w3s.link/ipfs/${cid}`;
+  // return `https://${cid}.ipfs.w3s.link/`;
+  return `https://braindance.mypinata.cloud/ipfs/${cid}`;
+}
+
+export function sleep(ms: number) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(true), ms);
+  })
+}

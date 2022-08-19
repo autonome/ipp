@@ -1,7 +1,10 @@
 const config = {
-  appID: 'ipp',
+  appID: 'IPP',
   REACT_APP_WEB3_STORAGE_API_TOKEN: process.env.REACT_APP_WEB3_STORAGE_API_TOKEN || "",
+  REACT_APP_WEB3_STORAGE_API_DB_TOKEN: process.env.REACT_APP_WEB3_STORAGE_API_DB_TOKEN || "",
   REACT_APP_WEB3_NAME: process.env.REACT_APP_WEB3_NAME || "",
+  LAST_SYNC_NUMBER: "IPP_LAST_SYNC_NUMBER",
+  LAST_SYNC_BLOGS: "IPP_LAST_SYNC_BLOGS",
 };
 
 export default config;

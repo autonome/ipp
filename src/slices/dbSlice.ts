@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { convertTitle } from 'utils/helper';
+import { convertTitle, getStorageItem } from 'utils/helper';
 import { Service, Web3Storage } from 'web3.storage';
-import * as Name from 'w3name';
 import config from 'utils/config';
 
 const client = new Web3Storage({ token: config.REACT_APP_WEB3_STORAGE_API_TOKEN } as Service);
-const name = Name.parse(config.REACT_APP_WEB3_NAME);
+const clientDb = new Web3Storage({ token: config.REACT_APP_WEB3_STORAGE_API_DB_TOKEN } as Service);
+
 
 const initialState = {
   Blogs: [] as string[],
@@ -15,37 +15,46 @@ const initialState = {
 export const createBlog = createAsyncThunk('createBlog', async (blog: IBlog) => {
   try {
     const title = convertTitle(blog.Title);
-    const blob = new File([JSON.stringify(blog, null, 2)], title, {type: "application/json"})
+    let blob = new File([JSON.stringify(blog, null, 2)], title + "_1", {type: "application/json"})
     const rootCid = await client.put([blob], {
       name: title,
       maxRetries: 3,
+      wrapWithDirectory: false
     });
 
-    const name = Name.parse(config.REACT_APP_WEB3_NAME);
-    const revision = await Name.resolve(name);
-    
+    const dbAction: IDatabaseAction = {
+      Type: "ADD_BLOG",
+      CID: rootCid
+    };
 
-    // const nextRevision = await Name.increment(revision, nextValue);
-    // await Name.publish(nextRevision, name.key);
+    blob = new File([JSON.stringify(dbAction, null, 2)], title + "_1", {type: "application/json"})
+    await clientDb.put([blob], {
+      name: "add_blog_" + title,
+      maxRetries: 3,
+      wrapWithDirectory: false
+    });
+
+    return blog;
   } catch {
-    return null;
+    return false;
   }
 });
-
 
 export const dbSlice = createSlice({
   name: 'dbSlice',
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
-  reducers: {},
+  reducers: {
+    resetFromLocalStorage: (state: IDatabase, action: PayloadAction) => {
+      state.Blogs = getStorageItem(config.LAST_SYNC_BLOGS, []) || [];
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(createBlog.fulfilled, (state: any, action: PayloadAction<any>) => {
-      state.web3 = action.payload?.web3;
-      console.log({ action });
-      state.selectedAddress = action.payload?.account;
-      state.chainId = action.payload?.chainId;
     });
   },
 });
+
+export const {resetFromLocalStorage} = dbSlice.actions;
 
 export default dbSlice.reducer;

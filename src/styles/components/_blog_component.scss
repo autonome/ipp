@@ -1,0 +1,35 @@
+.blog-item {
+  padding: 20px;
+  border-bottom: 1px solid #ccc;
+
+  .user {
+    display: flex;
+    align-items: center;
+
+    .name {
+      margin: 0 0 0 6px;
+      font-size: 14px;
+      color: #666;
+      cursor: pointer;
+    }
+
+    .date {
+      margin: 0 0 0 auto;
+      font-size: 12px;
+      color: #666;
+      cursor: pointer;
+    }
+  }
+
+  .blog-title {
+    margin: 12px 0 8px 0;
+    line-height: 28px;
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  .blog-body {
+    font-size: 16px;
+    cursor: pointer;
+  }
+}
