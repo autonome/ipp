@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import Footer from 'components/Footer';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { connectWallet, disconnectWallet } from 'slices/web3Slice';
@@ -11,9 +11,7 @@ interface IWelcome {}
 
 const Welcome = (props: IWelcome) => {
   const dispatch = useDispatch<AppDispatch>();
-  const web3 = useSelector<any, any>(state => state.web3.web3);
   const account = useSelector<any, string | null>(state => state.web3.selectedAddress);
-  const chainId = useSelector<any, number | null>(state => state.web3.chainId);
 
   const onConnect = () => {
     dispatch(account ? disconnectWallet() : connectWallet());

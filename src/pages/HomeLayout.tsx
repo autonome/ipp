@@ -8,6 +8,8 @@ import {
 import SideBar from "components/SideBar";
 import Home from "components/Home";
 import NewBlog from "components/NewBlog";
+import Profile from "components/Profile";
+import MyBlogs from "components/MyBlogs";
 
 const routes: any[] = [
   {
@@ -17,6 +19,14 @@ const routes: any[] = [
   {
     path: 'new',
     component: NewBlog,
+  },
+  {
+    path: 'profile',
+    component: Profile,
+  },
+  {
+    path: 'myblogs',
+    component: MyBlogs,
   },
 ];
 

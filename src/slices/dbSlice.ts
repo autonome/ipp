@@ -4,15 +4,15 @@ import { Service, Web3Storage } from 'web3.storage';
 import config from 'utils/config';
 
 const client = new Web3Storage({ token: config.REACT_APP_WEB3_STORAGE_API_TOKEN } as Service);
-const clientDb = new Web3Storage({ token: config.REACT_APP_WEB3_STORAGE_API_DB_TOKEN } as Service);
 
 
 const initialState = {
-  Blogs: [] as string[],
+  Initialized: false,
+  Blogs: [] as IBlog[],
   Users: [] as IUser[]
 } as IDatabase;
 
-export const createBlog = createAsyncThunk('createBlog', async (blog: IBlog) => {
+export const createBlog = createAsyncThunk('createBlog', async (blog: IBlog, {rejectWithValue}) => {
   try {
     const title = convertTitle(blog.Title);
     let blob = new File([JSON.stringify(blog, null, 2)], title + "_1", {type: "application/json"})
@@ -22,21 +22,10 @@ export const createBlog = createAsyncThunk('createBlog', async (blog: IBlog) => 
       wrapWithDirectory: false
     });
 
-    const dbAction: IDatabaseAction = {
-      Type: "ADD_BLOG",
-      CID: rootCid
-    };
-
-    blob = new File([JSON.stringify(dbAction, null, 2)], title + "_1", {type: "application/json"})
-    await clientDb.put([blob], {
-      name: "add_blog_" + title,
-      maxRetries: 3,
-      wrapWithDirectory: false
-    });
-
+    blog.CID = rootCid;
     return blog;
-  } catch {
-    return false;
+  } catch (err: any) {
+    return rejectWithValue(err.response.data);
   }
 });
 
@@ -45,8 +34,28 @@ export const dbSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    resetFromLocalStorage: (state: IDatabase, action: PayloadAction) => {
-      state.Blogs = getStorageItem(config.LAST_SYNC_BLOGS, []) || [];
+    resetFromLocalStorage: (state: IDatabase, action: PayloadAction<number>) => {
+      // dispose individual action
+
+      const blogs = state.Blogs;
+      const lastSyncNumber = getStorageItem(config.LAST_SYNC_NUMBER, 0) || 0;
+      const startNumber = state.Initialized ? action.payload : 0;
+      for (let i = startNumber; i < lastSyncNumber; i++)
+      {
+        const data = getStorageItem(config.LAST_SYNC_RECORD + i, {}) || {};
+        switch (data.Type) {
+          case "ADD_BLOG":
+            data.Date = new Date(data.Date);
+            blogs.push(data);
+            break;
+
+          default:
+            break;
+        }
+      }
+
+      state.Blogs = blogs;
+      state.Initialized = true;
     }
   },
   extraReducers: (builder) => {

@@ -4,17 +4,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { createBlog } from "slices/dbSlice";
 import { AppDispatch } from "slices/store";
 import { NotificationManager } from "./Notification";
+import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 interface INewBlog {}
 
 const NewBlog = (props: INewBlog) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const web3 = useSelector<any, any>((state) => state.web3.web3);
   const account = useSelector<any, string | null>(
     (state) => state.web3.selectedAddress
-  );
-  const chainId = useSelector<any, number | null>(
-    (state) => state.web3.chainId
   );
 
   const [title, setTitle] = useState<string>("");
@@ -27,17 +26,26 @@ const NewBlog = (props: INewBlog) => {
     }
 
     const blog: IBlog = {
+      Type: "ADD_BLOG",
+      UUID: uuidv4(),
       Title: title,
       Body: body,
       Creator: account.toLowerCase(),
-      Followers: []
+      Followers: [],
     };
 
-    dispatch(createBlog(blog)).then(res => {
-      console.log({res});
-    }, err => {
-      console.log({err});
-    });
+    dispatch(createBlog(blog))
+      .unwrap()
+      .then((blog) => {
+        // handle result here
+        NotificationManager.success(`"${blog.Title}" Created`, "Blog Created");
+        navigate("/main");
+        console.log({blog});
+      })
+      .catch((rejectedValueOrSerializedError) => {
+        // handle error here
+        console.log({rejectedValueOrSerializedError});
+      });
   };
 
   return (

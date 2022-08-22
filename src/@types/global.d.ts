@@ -4,6 +4,8 @@ interface IAction {
 }
 
 interface IBlog {
+  Type: "ADD_BLOG"
+  UUID: string;
   Title: string;
   Body: string;
   Creator: string;
@@ -13,18 +15,17 @@ interface IBlog {
 }
 
 interface IUser {
+  Type: "ADD_USER"
   Name?: string;
   Email?: string;
   Wallet: string;
   Image?: string;
+  CID?: string;
+  Date?: Date;
 }
 
 interface IDatabase {
-  Blogs: string[];
+  Initialized: boolean;
+  Blogs: IBlog[];
   Users: IUser[];
-}
-
-interface IDatabaseAction {
-  Type: "ADD_BLOG" | "ADD_USER";
-  CID: string;
 }

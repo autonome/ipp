@@ -1,23 +1,24 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
-  loading: false
+  loading: false,
+  syncing: false,
 };
 
 export const viewState = createSlice({
-  name: 'viewState',
-  // `createSlice` will infer the state type from the `initialState` argument
+  name: "viewState",
   initialState,
   reducers: {
     setLoading: (state: any, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
-    }
+    },
+    setSyncing: (state: any, action: PayloadAction<boolean>) => {
+      state.syncing = action.payload;
+    },
   },
-  extraReducers: (builder) => {
-  },
+  extraReducers: (builder: any) => {},
 });
 
-export const {setLoading} = viewState.actions;
+export const { setLoading, setSyncing } = viewState.actions;
 
 export default viewState.reducer;

@@ -88,7 +88,7 @@ export function convertTitle(str: string) {
   let res = "";
   for (let i = 0; i < str1.length; i++) {
     const str2 = str1.substring(i, i + 1);
-    if ((str2[0] >= 'a' && str2[0] <= 'z') || (str2[0] >= '0' && str2[0] <= '9') || str2[0] == '-' || str2[0] == '_') {
+    if ((str2[0] >= 'a' && str2[0] <= 'z') || (str2[0] >= '0' && str2[0] <= '9') || str2[0] === '-' || str2[0] === '_') {
       res += str2;
     } else {
       res += "-";

@@ -1,18 +1,48 @@
 import React from "react";
 import { FaHome, FaPlus } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { useNavigate } from "react-router-dom";
+import { disconnectWallet } from 'slices/web3Slice';
+import { AppDispatch } from 'slices/store';
 
 interface INavBar {}
 
 const NavBar = (props: INavBar) => {
-  const web3 = useSelector<any, any>((state) => state.web3.web3);
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const account = useSelector<any, string | null>(
     (state) => state.web3.selectedAddress
   );
-  const chainId = useSelector<any, number | null>(
-    (state) => state.web3.chainId
-  );
+
+  // user account dropdown actions
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(disconnectWallet());
+    setAnchorEl(null);
+  };
+
+  const handleProfile = () => {
+    navigate('/main/profile');
+    setAnchorEl(null);
+  };
+
+  const handleMyBlogs = () => {
+    navigate('/main/myblogs');
+    setAnchorEl(null);
+  };
 
   return (
     <div className="navbar">
@@ -38,11 +68,35 @@ const NavBar = (props: INavBar) => {
       <div className="user">
         {account && (
           <>
-            <img
-              src="/assets/images/user-avatar.png"
-              className="item-image"
-              alt="Annya"
-            />
+            <Button
+              id="basic-button"
+              aria-controls={open ? 'basic-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+              style={{
+                minWidth: 'unset'
+              }}
+            >
+              <img
+                src="/assets/images/user-avatar.png"
+                className="item-image"
+                alt="Annya"
+              />
+            </Button>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+            >
+              <MenuItem onClick={handleProfile}>Profile</MenuItem>
+              <MenuItem onClick={handleMyBlogs}>My Blogs</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
           </>
         )}
       </div>
