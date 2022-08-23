@@ -34,9 +34,9 @@ interface IHomeLayout {}
 
 const HomeLayout = (props: IHomeLayout) => {
   return (
-    <div className="main-container">
+    <div className="home-layout">
       <NavBar />
-      <div className="container">
+      <div className="main-container">
         <Routes>
           {routes.map((e) => (
             <Route
@@ -48,7 +48,9 @@ const HomeLayout = (props: IHomeLayout) => {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
-      <SideBar />
+      <div className="side-container">
+        <SideBar />
+      </div>
     </div>
   );
 };

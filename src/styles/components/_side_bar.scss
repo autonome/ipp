@@ -1,0 +1,17 @@
+.side-bar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .tip-panel {
+    width: 100%;
+    padding: 20px;
+    border-radius: 20px;
+    background: rgba(196, 226, 255, 0.5);
+    color: #333;
+
+    h3 {
+      margin: 0 0 10px 0;
+    }
+  }
+}

@@ -1,5 +1,5 @@
 
-.main-container {
+.home-layout {
   width: 1600px;
   height: 100vh;
 
@@ -14,15 +14,21 @@
   height: 100%;
   display: flex;
 
-  .container {
-    margin: 0 10px;
+  .main-container {
     border: 1px solid #ddd;
     border-top: none;
     border-bottom: none;
     height: 100vh;
     width: 70%;
     height: 100vh;
-    padding: 20px 10px 10px 10px;
+    padding: 20px 30px 10px 30px;
+    overflow-y: auto;
+  }
+
+  .side-container {
+    width: 30%;
+    height: 100vh;
+    padding: 20px;
     overflow-y: auto;
   }
 }

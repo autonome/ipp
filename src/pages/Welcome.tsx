@@ -6,12 +6,14 @@ import { Link } from 'react-router-dom';
 import { connectWallet, disconnectWallet } from 'slices/web3Slice';
 import { AppDispatch } from 'slices/store';
 import { trimAddress } from 'utils/helper';
+import BlogComponent from 'components/BlogComponent';
 
 interface IWelcome {}
 
 const Welcome = (props: IWelcome) => {
   const dispatch = useDispatch<AppDispatch>();
   const account = useSelector<any, string | null>(state => state.web3.selectedAddress);
+  const blogs = useSelector<any, IBlog[]>(state => state.db.Blogs) || [];
 
   const onConnect = () => {
     dispatch(account ? disconnectWallet() : connectWallet());
@@ -38,6 +40,10 @@ const Welcome = (props: IWelcome) => {
       </div>
       <div className="body">
         <h2>Trending</h2>
+        {blogs
+          .map((blog) => (
+            <BlogComponent key={blog.CID} blog={blog} />
+          ))}
       </div>
       <Footer />
     </div>
