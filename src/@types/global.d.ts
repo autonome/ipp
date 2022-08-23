@@ -17,15 +17,15 @@ interface IBlog {
 interface IUser {
   Type: "ADD_USER"
   Name?: string;
-  Email?: string;
   Wallet: string;
   Image?: string;
   CID?: string;
   Date?: Date;
+  Bio?: string;
 }
 
 interface IDatabase {
   Initialized: boolean;
   Blogs: IBlog[];
-  Users: IUser[];
+  Users: { [key: string]: IUser; };
 }

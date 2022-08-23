@@ -9,7 +9,7 @@ const client = new Web3Storage({ token: config.REACT_APP_WEB3_STORAGE_API_TOKEN 
 const initialState = {
   Initialized: false,
   Blogs: [] as IBlog[],
-  Users: [] as IUser[]
+  Users: {} as { [key: string]: IUser; }
 } as IDatabase;
 
 export const createBlog = createAsyncThunk('createBlog', async (blog: IBlog, {rejectWithValue}) => {
@@ -29,6 +29,23 @@ export const createBlog = createAsyncThunk('createBlog', async (blog: IBlog, {re
   }
 });
 
+export const createUser = createAsyncThunk('createUser', async (user: IUser, {rejectWithValue}) => {
+  try {
+    const title = convertTitle(user.Wallet);
+    let blob = new File([JSON.stringify(user, null, 2)], title + "_2", {type: "application/json"})
+    const rootCid = await client.put([blob], {
+      name: title,
+      maxRetries: 3,
+      wrapWithDirectory: false
+    });
+
+    user.CID = rootCid;
+    return user;
+  } catch (err: any) {
+    return rejectWithValue(err.response.data);
+  }
+});
+
 export const dbSlice = createSlice({
   name: 'dbSlice',
   // `createSlice` will infer the state type from the `initialState` argument
@@ -38,15 +55,20 @@ export const dbSlice = createSlice({
       // dispose individual action
 
       const blogs = state.Blogs;
+      const users = state.Users;
       const lastSyncNumber = getStorageItem(config.LAST_SYNC_NUMBER, 0) || 0;
       const startNumber = state.Initialized ? action.payload : 0;
       for (let i = startNumber; i < lastSyncNumber; i++)
       {
         const data = getStorageItem(config.LAST_SYNC_RECORD + i, {}) || {};
+        data.Date = new Date(data.Date);
         switch (data.Type) {
           case "ADD_BLOG":
-            data.Date = new Date(data.Date);
             blogs.push(data);
+            break;
+
+          case "ADD_USER":
+            users[data.Wallet] = data;
             break;
 
           default:
@@ -55,6 +77,7 @@ export const dbSlice = createSlice({
       }
 
       state.Blogs = blogs;
+      state.Users = users;
       state.Initialized = true;
     }
   },
