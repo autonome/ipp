@@ -1,6 +1,7 @@
 import React from "react";
 import Avatar from 'react-avatar';
 import { useSelector } from "react-redux";
+import { getW3link } from "utils/helper";
 
 interface IBlogComponent {
   blog: IBlog;
@@ -13,7 +14,7 @@ const BlogComponent = (props: IBlogComponent) => {
   return (
     <div className="blog-item">
       <div className="user">
-        <Avatar name={users[blog.Creator]?.Name || "Unnamed"} size="30px" round={true} />
+        <Avatar name={users[blog.Creator]?.Name || "Unnamed"} size="30px" round={true} src={!!(users[blog.Creator]?.Image) ? getW3link(users[blog.Creator]?.Image || "") : ''} />
         <div className="name" title={blog.Creator}>{users[blog.Creator]?.Name || blog.Creator}</div>
         <div className="date">{blog.Date?.toLocaleString() || ""}</div>
       </div>

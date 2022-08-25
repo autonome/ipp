@@ -16,6 +16,8 @@ const SyncWorker = (props: ISyncWorker) => {
   const isSyncing = useSelector<any, boolean>((state) => state.viewState.syncing);
 
   useEffect(() => {
+    const lastSyncNumber = getStorageItem(config.LAST_SYNC_NUMBER, 0) || 0;
+    dispatch(resetFromLocalStorage(lastSyncNumber));
     sync();
   }, []);
 
@@ -34,6 +36,10 @@ const SyncWorker = (props: ISyncWorker) => {
     const lastSyncNumber = getStorageItem(config.LAST_SYNC_NUMBER, 0) || 0;
     for (let i = lastSyncNumber; i < uploadObjects.length; i++) {
       const upload = uploadObjects[i];
+      if (upload.name.indexOf("image_") === 0) {
+        setStorageItem(config.LAST_SYNC_NUMBER, i + 1);
+        continue;
+      }
       const res = await client.get(uploadObjects[i].cid);
       if (!res) {
         continue;

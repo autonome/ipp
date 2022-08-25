@@ -6,6 +6,7 @@ import { AppDispatch } from "slices/store";
 import { NotificationManager } from "./Notification";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
+import { setLoading } from "slices/viewState";
 
 interface INewBlog {}
 
@@ -25,6 +26,7 @@ const NewBlog = (props: INewBlog) => {
       return;
     }
 
+    dispatch(setLoading(true));
     const blog: IBlog = {
       Type: "ADD_BLOG",
       UUID: uuidv4(),
@@ -41,10 +43,12 @@ const NewBlog = (props: INewBlog) => {
         NotificationManager.success(`"${blog.Title}" Created`, "Blog Created");
         navigate("/main");
         console.log({blog});
+        dispatch(setLoading(false));
       })
       .catch((rejectedValueOrSerializedError) => {
         // handle error here
         console.log({rejectedValueOrSerializedError});
+        dispatch(setLoading(false));
       });
   };
 

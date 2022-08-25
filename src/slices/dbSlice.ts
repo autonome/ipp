@@ -14,8 +14,8 @@ const initialState = {
 
 export const createBlog = createAsyncThunk('createBlog', async (blog: IBlog, {rejectWithValue}) => {
   try {
-    const title = convertTitle(blog.Title);
-    let blob = new File([JSON.stringify(blog, null, 2)], title + "_1", {type: "application/json"})
+    const title = "blog_" + convertTitle(blog.Title);
+    let blob = new File([JSON.stringify(blog, null, 2)], title, {type: "application/json"})
     const rootCid = await client.put([blob], {
       name: title,
       maxRetries: 3,
@@ -31,8 +31,8 @@ export const createBlog = createAsyncThunk('createBlog', async (blog: IBlog, {re
 
 export const createUser = createAsyncThunk('createUser', async (user: IUser, {rejectWithValue}) => {
   try {
-    const title = convertTitle(user.Wallet);
-    let blob = new File([JSON.stringify(user, null, 2)], title + "_2", {type: "application/json"})
+    const title = "user_" + convertTitle(user.Wallet);
+    let blob = new File([JSON.stringify(user, null, 2)], title, {type: "application/json"})
     const rootCid = await client.put([blob], {
       name: title,
       maxRetries: 3,
@@ -41,6 +41,19 @@ export const createUser = createAsyncThunk('createUser', async (user: IUser, {re
 
     user.CID = rootCid;
     return user;
+  } catch (err: any) {
+    return rejectWithValue(err.response.data);
+  }
+});
+
+export const uploadImage = createAsyncThunk('uploadImage', async (file: File, {rejectWithValue}) => {
+  try {
+    const rootCid = await client.put([file], {
+      name: "image_" + (new Date()).getTime().toString(),
+      maxRetries: 3,
+      wrapWithDirectory: false
+    });
+    return rootCid;
   } catch (err: any) {
     return rejectWithValue(err.response.data);
   }

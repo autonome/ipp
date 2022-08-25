@@ -1,5 +1,17 @@
 .profile-page {
+  padding: 0 20%;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  align-items: center;
+
+  
+  
+  .name, .wallet {
+    text-align: center;
+  }
+
+  .submit {
+    width: 100%;
+  }
 }
