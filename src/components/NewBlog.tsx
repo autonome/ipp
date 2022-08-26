@@ -7,6 +7,7 @@ import { NotificationManager } from "./Notification";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import { setLoading } from "slices/viewState";
+import MediumEditor from "./MediumEditor";
 
 interface INewBlog {}
 
@@ -42,35 +43,28 @@ const NewBlog = (props: INewBlog) => {
         // handle result here
         NotificationManager.success(`"${blog.Title}" Created`, "Blog Created");
         navigate("/main");
-        console.log({blog});
+        console.log({ blog });
         dispatch(setLoading(false));
       })
       .catch((rejectedValueOrSerializedError) => {
         // handle error here
-        console.log({rejectedValueOrSerializedError});
+        console.log({ rejectedValueOrSerializedError });
         dispatch(setLoading(false));
       });
   };
 
   return (
     <div className="new-blog-page">
-      <TextField
-        id="title"
-        label="Title"
-        variant="standard"
-        size="small"
+      <input
+        className="title"
+        type="text"
+        placeholder="Title"
         onChange={(e: any) => setTitle(e.target.value)}
         value={title}
       />
-      <TextField
-        id="body"
-        label="Text"
-        variant="standard"
-        multiline
-        maxRows={30}
-        size="small"
-        onChange={(e: any) => setBody(e.target.value)}
-        value={body}
+      <MediumEditor
+        text={body || "<p></p>"}
+        onChange={(text: any, medium: any) => { setBody(text); console.log({text, medium})}}
       />
       <div className="submit">
         <Button variant="contained" onClick={onCreate}>

@@ -1,7 +1,18 @@
 .new-blog-page {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+
+  .title {
+    border: none;
+    outline: none;
+    font-size: 30px;
+    padding: 15px;
+    color: #444;
+
+    &:focus {
+      border-left: 1px solid #ccc;
+    }
+  }
 
   .submit {
     display: flex;
