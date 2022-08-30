@@ -7,7 +7,11 @@ import { NotificationManager } from "./Notification";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import { setLoading } from "slices/viewState";
-import MediumEditor from "./MediumEditor";
+import { Controlled as CodeMirror } from "react-codemirror2";
+import "codemirror/lib/codemirror.css";
+import "codemirror/theme/material.css";
+import "codemirror/mode/markdown/markdown";
+import { removeHtmlTags } from "utils/helper";
 
 interface INewBlog {}
 
@@ -24,6 +28,16 @@ const NewBlog = (props: INewBlog) => {
   const onCreate = () => {
     if (!account) {
       NotificationManager.warning("Please connect to the wallet", "Warn");
+      return;
+    }
+
+    if (!title) {
+      NotificationManager.warning("Please input the title", "Warn");
+      return;
+    }
+    
+    if (!removeHtmlTags(body)) {
+      NotificationManager.warning("Please input the text", "Warn");
       return;
     }
 
@@ -62,13 +76,26 @@ const NewBlog = (props: INewBlog) => {
         onChange={(e: any) => setTitle(e.target.value)}
         value={title}
       />
-      <MediumEditor
+      {/* <MediumEditor
         text={body || "<p></p>"}
         onChange={(text: any, medium: any) => { setBody(text); console.log({text, medium})}}
+      /> */}
+      <CodeMirror
+        value={body}
+        options={{
+          lineNumbers: true,
+          mode: 'markdown'
+        }}
+        onBeforeChange={(editor, data, value) => {
+          setBody(value);
+          console.log(value);
+        }}
+        onChange={(editor, data, value) => {}}
+        className="newblog-editor"
       />
       <div className="submit">
         <Button variant="contained" onClick={onCreate}>
-          Create
+          Publish
         </Button>
       </div>
     </div>

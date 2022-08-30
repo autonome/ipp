@@ -14,7 +14,17 @@
     }
   }
 
+  .newblog-editor {
+    // padding: 0 0 0 12px;
+    font-size: 14px;
+
+    * {
+      font-family: 'Poppins';
+    }
+  }
+
   .submit {
+    margin: 10px 0 0 0;
     display: flex;
     justify-content: flex-end;
   }

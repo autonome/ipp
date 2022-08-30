@@ -49,7 +49,7 @@ const NavBar = (props: INavBar) => {
       <div className="logo">
         <a href="/">
           <img
-            src="/assets/images/logo.png"
+            src="/logo.png"
             className="item-image"
             alt="Protocol Labs"
           />
@@ -79,7 +79,7 @@ const NavBar = (props: INavBar) => {
               }}
             >
               <img
-                src="/assets/images/user-avatar.png"
+                src="/user-avatar.png"
                 className="item-image"
                 alt="Annya"
               />

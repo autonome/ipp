@@ -1,0 +1,43 @@
+.blog-reader {
+  h1.blog-title {
+    font-size: 32px;
+    color: #222;
+  }
+
+  .blog-body {
+    color: #333;
+    h1 {
+      font-size: 24px;
+    }
+    h2 {
+      font-size: 20px;
+    }
+    h3 {
+      font-size: 18px;
+    }
+    h4 {
+      font-size: 16px;
+    }
+    h5 {
+      font-size: 14px;
+    }
+    h6 {
+      font-size: 12px;
+    }
+
+    table {
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 4px 8px;
+    }
+
+    code {
+      background: #f5f5f5;
+      display: block;
+      padding: 10px;
+    }
+  }
+}

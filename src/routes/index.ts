@@ -3,7 +3,7 @@ import Welcome from 'pages/Welcome';
 
 const routes: any[] = [
   {
-    path: '/',
+    path: '/welcome',
     component: Welcome,
   },
   {

@@ -10,6 +10,7 @@ import Home from "components/Home";
 import NewBlog from "components/NewBlog";
 import Profile from "components/Profile";
 import MyBlogs from "components/MyBlogs";
+import BlogReader from "components/BlogReader";
 
 const routes: any[] = [
   {
@@ -28,6 +29,10 @@ const routes: any[] = [
     path: 'myblogs',
     component: MyBlogs,
   },
+  {
+    path: 'blogs/:uuid',
+    component: BlogReader,
+  },
 ];
 
 interface IHomeLayout {}
@@ -45,7 +50,7 @@ const HomeLayout = (props: IHomeLayout) => {
               element={React.createElement(e.component)}
             />
           ))}
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<Navigate to="/main" />} />
         </Routes>
       </div>
       <div className="side-container">

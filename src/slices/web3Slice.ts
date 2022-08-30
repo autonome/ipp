@@ -34,7 +34,8 @@ export const connectWallet = createAsyncThunk('connectWallet', async () => {
     const account = (await web3.eth.getAccounts())?.[0]?.toLowerCase();
     const chainId = await web3.eth.net.getId();
     return {web3, account, chainId};
-  } catch {
+  } catch (ex) {
+    console.log(ex);
     return null;
   }
 });

@@ -26,5 +26,11 @@ module.exports = function override(config) {
       fullySpecified: false, // disable the behavior
     },
   });
+  config.output = {
+    ...config.output, // copy all settings
+    filename: "[name].js",
+    chunkFilename: "[name].chunk.js",
+  };
+  console.log(config.output);
   return config;
 };

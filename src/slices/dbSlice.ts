@@ -89,6 +89,7 @@ export const dbSlice = createSlice({
         }
       }
 
+      blogs.sort((a, b) => (a.Date || new Date()) < (b.Date || new Date()) ? 1 : -1);
       state.Blogs = blogs;
       state.Users = users;
       state.Initialized = true;

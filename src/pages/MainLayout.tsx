@@ -21,7 +21,7 @@ const MainLayout = (props: IMainLayout) => {
             element={React.createElement(e.component)}
           />
         ))}
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<Navigate to="/main" />} />
       </Routes>
     </Router>
   );
