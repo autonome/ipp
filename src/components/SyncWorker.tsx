@@ -68,7 +68,7 @@ const SyncWorker = (props: ISyncWorker) => {
 
   return isSyncing ? (
     <div className="sync-component" title="Syncing ...">
-      <LinearProgress color="secondary" />
+      <LinearProgress color="success" />
     </div>
   ) : null;
 };

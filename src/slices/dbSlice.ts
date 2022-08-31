@@ -74,6 +74,7 @@ export const dbSlice = createSlice({
       for (let i = startNumber; i < lastSyncNumber; i++)
       {
         const data = getStorageItem(config.LAST_SYNC_RECORD + i, {}) || {};
+        console.log(data.Date);
         data.Date = new Date(data.Date);
         switch (data.Type) {
           case "ADD_BLOG":

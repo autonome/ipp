@@ -94,7 +94,7 @@ const NewBlog = (props: INewBlog) => {
         className="newblog-editor"
       />
       <div className="submit">
-        <Button variant="contained" onClick={onCreate}>
+        <Button variant="contained" color="success" onClick={onCreate}>
           Publish
         </Button>
       </div>

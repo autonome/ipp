@@ -122,3 +122,53 @@ export function removeHtmlTags(str: string) {
   else str = str.toString();
   return str.replace(/(<([^>]+)>)/gi, " ");
 }
+
+export function formatTime(date: Date) {
+  const hr = date.getHours();
+  const amOrPm = hr >= 12 ? "PM" : "AM";
+  const hours = hr > 12 ? hr - 12 : hr;
+  return `${hours}:${date.getMinutes().toString().padStart(2, "0")} ${amOrPm}`;
+}
+
+export function getWeekNumber(date: Date) {
+  const oneJan = new Date(date.getFullYear(),0,1);
+  const numberOfDays = Math.floor((date.getTime() - oneJan.getTime()) / (24 * 60 * 60 * 1000));
+  const result = Math.ceil(( date.getDay() + 1 + numberOfDays) / 7);
+  return result;
+}
+
+export function formatDate(date: Date | undefined) {
+  if (!date) {
+    return "";
+  }
+
+  const today = new Date();
+  const span = (today.getTime() - date.getTime()) / 1000;
+  if (today.getFullYear() === date.getFullYear() && today.getMonth() === date.getMonth() && today.getDate() === date.getDate()) {
+    if (span < 3000) {
+      return Math.round(span / 60) + " minutes ago";
+    }
+    return Math.round(span / 3600) + " hours ago";
+  }
+
+  const yesterday = new Date(today.getTime() - 86400000);
+  if (yesterday.getFullYear() === date.getFullYear() && yesterday.getMonth() === date.getMonth() && yesterday.getDate() === date.getDate()) {
+    return `Yesterday ${formatTime(date)}`;
+  }
+
+  const weekdays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ];
+
+  if (today.getFullYear() === date.getFullYear() && getWeekNumber(today) === getWeekNumber(date)) {
+    return `${weekdays[date.getDay()]} ${formatTime(date)}`;
+  }
+
+  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()} ${formatTime(date)}`;;
+}

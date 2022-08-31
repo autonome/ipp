@@ -1,5 +1,5 @@
 import React from "react";
-import { FaHome, FaPlus } from "react-icons/fa";
+import { FaEdit, FaHome, FaPlus } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import Button from '@mui/material/Button';
@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from "react-router-dom";
 import { disconnectWallet } from 'slices/web3Slice';
 import { AppDispatch } from 'slices/store';
+import { MdOutlineEditLocationAlt, MdOutlineHelpOutline, MdOutlineHome } from "react-icons/md";
 
 interface INavBar {}
 
@@ -56,13 +57,19 @@ const NavBar = (props: INavBar) => {
         </a>
       </div>
       <div className="nav-items">
-        <Link to="/main">
-          <FaHome size={30} />
+        <Link to="/main" title="Home">
+          <MdOutlineHome size={30} />
+        </Link>
+        <Link to="/main" title="Help">
+          <MdOutlineHelpOutline size={26} />
         </Link>
         {account && (
-          <Link to="/main/new">
-            <FaPlus size={30} />
-          </Link>
+          <>
+            <div className="separator" />
+            <Link to="/main/new" title="New Blog">
+              <MdOutlineEditLocationAlt size={30} />
+            </Link>
+          </>
         )}
       </div>
       <div className="user">

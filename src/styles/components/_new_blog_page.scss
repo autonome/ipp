@@ -15,11 +15,17 @@
   }
 
   .newblog-editor {
+    border: 1px solid #ccc;
+    height: calc(100vh - 160px);
     // padding: 0 0 0 12px;
-    font-size: 14px;
+    font-size: 16px;
 
     * {
-      font-family: 'Poppins';
+      font-family: 'Consolas';
+    }
+
+    .CodeMirror {
+      height: calc(100vh - 162px);
     }
   }
 

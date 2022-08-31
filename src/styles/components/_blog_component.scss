@@ -2,6 +2,14 @@
   padding: 20px 0;
   border-bottom: 1px solid #ccc;
 
+  &:hover {
+    border-bottom: 1px solid var(--primary-color);
+
+    .blog-title {
+      color: var(--primary-color);
+    }
+  }
+
   .user {
     display: flex;
     align-items: center;
