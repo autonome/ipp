@@ -22,9 +22,11 @@ const BlogComponent = (props: IBlogComponent) => {
         <div className="name" title={blog.Creator}>{users[blog.Creator]?.Name || blog.Creator}</div>
         <div className="date" title={blog.Date?.toLocaleString() || ""}>{formatDate(blog.Date)}</div>
       </div>
-      <h3 className="blog-title">{blog.Title}</h3>
-      <Link className="blog-body" to={`/main/blogs/${blog.UUID}`}>
-        {removeHtmlTags(md.render(blog.Body))}
+      <Link to={`/main/blogs/${blog.UUID}`}>
+        <h3 className="blog-title">{blog.Title}</h3>
+        <div className="blog-body">
+          {removeHtmlTags(md.render(blog.Body || ""))}
+        </div>
       </Link>
     </div>
   );

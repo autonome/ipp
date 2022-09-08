@@ -31,6 +31,5 @@ module.exports = function override(config) {
     filename: "[name].js",
     chunkFilename: "[name].chunk.js",
   };
-  console.log(config.output);
   return config;
 };

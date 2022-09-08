@@ -108,6 +108,7 @@ export function convertTitle(str: string) {
 export function getW3link(cid: string) {
   // return `https://w3s.link/ipfs/${cid}`;
   // return `https://${cid}.ipfs.w3s.link/`;
+  // return `https://braindance.mypinata.cloud/ipns/k51qzi5uqu5djrhlp3k6pdu4bsdoc548vshanx5ypadecaxxswwklx0qk4g86x`;
   return `https://braindance.mypinata.cloud/ipfs/${cid}`;
 }
 

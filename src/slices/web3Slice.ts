@@ -60,7 +60,6 @@ export const web3Slice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(connectWallet.fulfilled, (state: any, action: PayloadAction<any>) => {
       state.web3 = action.payload?.web3;
-      console.log({ action });
       state.selectedAddress = action.payload?.account;
       state.chainId = action.payload?.chainId;
     });

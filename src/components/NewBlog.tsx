@@ -1,11 +1,11 @@
 import { Button, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createBlog } from "slices/dbSlice";
 import { AppDispatch } from "slices/store";
 import { NotificationManager } from "./Notification";
 import { v4 as uuidv4 } from "uuid";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { setLoading } from "slices/viewState";
 import { Controlled as CodeMirror } from "react-codemirror2";
 import "codemirror/lib/codemirror.css";
@@ -25,6 +25,17 @@ const NewBlog = (props: INewBlog) => {
   const [title, setTitle] = useState<string>("");
   const [body, setBody] = useState<string>("");
 
+  const {uuid} = useParams();
+  const blogs = useSelector<any, IBlog[]>((state) => state.db.Blogs);
+  const [curBlog, setCurBlog] = useState<IBlog | undefined>(undefined);
+
+  useEffect(() => {
+    const blog1 = blogs.find((b) => b.UUID === uuid);
+    setCurBlog(blog1);
+    setTitle(blog1?.Title || "");
+    setBody(blog1?.Body || "");
+  }, [blogs, uuid]);
+
   const onCreate = () => {
     if (!account) {
       NotificationManager.warning("Please connect to the wallet", "Warn");
@@ -43,19 +54,19 @@ const NewBlog = (props: INewBlog) => {
 
     dispatch(setLoading(true));
     const blog: IBlog = {
-      Type: "ADD_BLOG",
+      Type: uuid ? "UPDATE_BLOG" : "ADD_BLOG",
       UUID: uuidv4(),
       Title: title,
       Body: body,
       Creator: account.toLowerCase(),
-      Followers: [],
+      BodyCID: ''
     };
 
     dispatch(createBlog(blog))
       .unwrap()
       .then((blog) => {
         // handle result here
-        NotificationManager.success(`"${blog.Title}" Created`, "Blog Created");
+        NotificationManager.success(`"${blog.Title}" ${uuid ? "Updated" : "Created"}`, "Blog Created");
         navigate("/main");
         console.log({ blog });
         dispatch(setLoading(false));
@@ -88,14 +99,13 @@ const NewBlog = (props: INewBlog) => {
         }}
         onBeforeChange={(editor, data, value) => {
           setBody(value);
-          console.log(value);
         }}
         onChange={(editor, data, value) => {}}
         className="newblog-editor"
       />
       <div className="submit">
         <Button variant="contained" color="success" onClick={onCreate}>
-          Publish
+          {uuid ? "Update" : "Publish"}
         </Button>
       </div>
     </div>

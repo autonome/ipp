@@ -45,7 +45,10 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-decoration: none;
     color: #444;
+  }
+
+  a {
+    text-decoration: none;
   }
 }

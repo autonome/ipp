@@ -33,6 +33,10 @@ const routes: any[] = [
     path: 'blogs/:uuid',
     component: BlogReader,
   },
+  {
+    path: 'blogs/:uuid/edit',
+    component: NewBlog,
+  },
 ];
 
 interface IHomeLayout {}

@@ -4,14 +4,15 @@ interface IAction {
 }
 
 interface IBlog {
-  Type: "ADD_BLOG"
+  Type: "ADD_BLOG" | "UPDATE_BLOG"
   UUID: string;
   Title: string;
-  Body: string;
+  Body?: string;
   Creator: string;
-  Followers: string[];
+  Followers?: string[];
   CID?: string;
   Date?: Date;
+  BodyCID: string;
 }
 
 interface IUser {

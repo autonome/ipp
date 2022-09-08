@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { convertTitle, getStorageItem } from 'utils/helper';
 import { Service, Web3Storage } from 'web3.storage';
 import config from 'utils/config';
+import { updateRss } from 'utils/rss';
 
 const client = new Web3Storage({ token: config.REACT_APP_WEB3_STORAGE_API_TOKEN } as Service);
 
@@ -14,15 +15,29 @@ const initialState = {
 
 export const createBlog = createAsyncThunk('createBlog', async (blog: IBlog, {rejectWithValue}) => {
   try {
-    const title = "blog_" + convertTitle(blog.Title);
-    let blob = new File([JSON.stringify(blog, null, 2)], title, {type: "application/json"})
-    const rootCid = await client.put([blob], {
+    // upload blog body
+    let title = "blogbody_" + convertTitle(blog.Title);
+    let blobBody = new File([blog.Body || ""], title, {type: "text/plain"})
+    let cid = await client.put([blobBody], {
       name: title,
       maxRetries: 3,
       wrapWithDirectory: false
     });
+    blog.BodyCID = cid;
+    blog.Body = undefined;
 
-    blog.CID = rootCid;
+    // upload blog
+    title = "blog_" + convertTitle(blog.Title);
+    let blob = new File([JSON.stringify(blog, null, 2)], title, {type: "application/json"})
+    cid = await client.put([blob], {
+      name: title,
+      maxRetries: 3,
+      wrapWithDirectory: false
+    });
+    blog.CID = cid;
+
+    // update rss
+    updateRss();
     return blog;
   } catch (err: any) {
     return rejectWithValue(err.response.data);
@@ -74,12 +89,19 @@ export const dbSlice = createSlice({
       for (let i = startNumber; i < lastSyncNumber; i++)
       {
         const data = getStorageItem(config.LAST_SYNC_RECORD + i, {}) || {};
-        console.log(data.Date);
         data.Date = new Date(data.Date);
         switch (data.Type) {
           case "ADD_BLOG":
             blogs.push(data);
             break;
+
+          case "UPDATE_BLOG": {
+            const index = blogs.findIndex((blog) => blog.UUID === data.UUID);
+            if (index != -1) {
+              blogs[index] = data;
+            }
+            break;
+          }
 
           case "ADD_USER":
             users[data.Wallet] = data;
