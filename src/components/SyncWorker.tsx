@@ -39,6 +39,7 @@ const SyncWorker = (props: ISyncWorker) => {
     if (version !== config.version) {
       lastSyncNumber = 0;
       setStorageItem(config.VERSION_LABEL, config.version);
+      console.log({lastSyncNumber});
     }
 
 

@@ -82,13 +82,17 @@ export const dbSlice = createSlice({
     resetFromLocalStorage: (state: IDatabase, action: PayloadAction<number>) => {
       // dispose individual action
 
-      const blogs = state.Blogs;
+      const startNumber = state.Initialized ? action.payload : 0;
+      const blogs = startNumber > 0 ? state.Blogs : [];
       const users = state.Users;
       const lastSyncNumber = getStorageItem(config.LAST_SYNC_NUMBER, 0) || 0;
-      const startNumber = state.Initialized ? action.payload : 0;
+      console.log({lastSyncNumber: lastSyncNumber});
       for (let i = startNumber; i < lastSyncNumber; i++)
       {
         const data = getStorageItem(config.LAST_SYNC_RECORD + i, {}) || {};
+        if (!data.Date) {
+          continue;
+        }
         data.Date = new Date(data.Date);
         switch (data.Type) {
           case "ADD_BLOG":
@@ -97,7 +101,7 @@ export const dbSlice = createSlice({
 
           case "UPDATE_BLOG": {
             const index = blogs.findIndex((blog) => blog.UUID === data.UUID);
-            if (index != -1) {
+            if (index !== -1) {
               blogs[index] = data;
             }
             break;

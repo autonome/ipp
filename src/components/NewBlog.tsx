@@ -55,7 +55,7 @@ const NewBlog = (props: INewBlog) => {
     dispatch(setLoading(true));
     const blog: IBlog = {
       Type: uuid ? "UPDATE_BLOG" : "ADD_BLOG",
-      UUID: uuidv4(),
+      UUID: curBlog?.UUID || uuidv4(),
       Title: title,
       Body: body,
       Creator: account.toLowerCase(),
