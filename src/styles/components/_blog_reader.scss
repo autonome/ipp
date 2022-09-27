@@ -6,6 +6,8 @@
 
   .blog-body {
     color: #333;
+    white-space: break-spaces;
+
     h1 {
       font-size: 24px;
     }
@@ -39,5 +41,9 @@
       display: block;
       padding: 10px;
     }
+  }
+
+  .buttons {
+    margin: 16px 0 0 0;
   }
 }

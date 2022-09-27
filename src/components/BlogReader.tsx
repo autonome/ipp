@@ -32,8 +32,10 @@ const BlogReader = (props: IBlogReader) => {
       <h1 className="blog-title">{blog?.Title}</h1>
       <div
         className="blog-body"
-        dangerouslySetInnerHTML={{ __html: md.render(blog?.Body || "") }}
-      />
+        // dangerouslySetInnerHTML={{ __html: md.render(blog?.Body || "") }}
+      >
+        {blog?.Body || ""}
+      </div>
       {blog?.Creator === account && (
         <div className="buttons">
           <Link to={`/main/blogs/${blog.UUID}/edit`}>

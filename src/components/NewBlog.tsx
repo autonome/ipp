@@ -78,6 +78,10 @@ const NewBlog = (props: INewBlog) => {
       });
   };
 
+  const onClose = () => {
+    navigate("/main/blogs/" + uuid);
+  }
+
   return (
     <div className="new-blog-page">
       <input
@@ -107,6 +111,9 @@ const NewBlog = (props: INewBlog) => {
         <Button variant="contained" color="success" onClick={onCreate}>
           {uuid ? "Update" : "Publish"}
         </Button>
+        {uuid && (
+          <Button variant="outlined" color="info" onClick={onClose}>Close</Button>
+        )}
       </div>
     </div>
   );
