@@ -49,9 +49,11 @@ const SyncWorker = (props: ISyncWorker) => {
 
     setProgress(lastSyncNumber * 100 / (uploadObjects.length || 1));
     for (let i = lastSyncNumber; i < uploadObjects.length; i++) {
+      console.log({progress})
       const upload = uploadObjects[i];
       if (upload.name.indexOf("image_") === 0) {
         setStorageItem(config.LAST_SYNC_NUMBER, i + 1);
+        setProgress((i + 1) * 100 / (uploadObjects.length || 1));
         continue;
       }
 
@@ -87,7 +89,7 @@ const SyncWorker = (props: ISyncWorker) => {
       setStorageItem(config.LAST_SYNC_RECORD + i, record);
       setStorageItem(config.LAST_SYNC_NUMBER, i + 1);
       
-      setProgress((lastSyncNumber + 1) * 100 / (uploadObjects.length || 1));
+      setProgress((i + 1) * 100 / (uploadObjects.length || 1));
     }
 
     dispatch(resetFromLocalStorage(lastSyncNumber));
@@ -104,7 +106,7 @@ const SyncWorker = (props: ISyncWorker) => {
   };
 
   return isSyncing ? (
-    <div className="sync-component" title="Syncing ...">
+    <div className="sync-component" title={"Syncing " + progress + "%"}>
       {progress >= 0 && <LinearProgress variant="determinate" value={progress} color="success" />}
     </div>
   ) : null;

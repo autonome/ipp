@@ -21,6 +21,8 @@
     "@walletconnect/web3-provider": "^1.8.0",
     "axios": "^0.27.2",
     "crypto-js": "^4.1.1",
+    "form-data": "^4.0.0",
+    "fs-extra": "^10.1.0",
     "markdown-it": "^13.0.1",
     "process": "^0.11.10",
     "react": "^18.2.0",
@@ -50,7 +52,8 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject"
+    "eject": "react-app-rewired eject",
+    "upload": "node ./scripts/upload.js"
   },
   "eslintConfig": {
     "extends": [
