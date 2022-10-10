@@ -64,13 +64,13 @@ const NavBar = (props: INavBar) => {
   return (
     <div className="navbar">
       <div className="logo">
-        <Link to="/">
+        <a href="https://k51qzi5uqu5dg77idvtml88k2bc6scmi9aftri6nub8f7k73fjbiw8xau3xe46.ipns.dweb.link/" target="_blank" rel="noreferrer">
           <img
             src="./logo.png"
             className="item-image"
             alt="Protocol Labs"
           />
-        </Link>
+        </a>
       </div>
       <div className="nav-items">
         <Link to="/main" title="Home">
