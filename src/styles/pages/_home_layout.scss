@@ -1,0 +1,34 @@
+
+.home-layout {
+  width: 1600px;
+  height: 100vh;
+
+  @media (max-width: 1599px) {
+    width: 1200px;
+  }
+
+  @media (max-width: 1199px) {
+    width: 1024px;
+  }
+
+  height: 100%;
+  display: flex;
+
+  .main-container {
+    border: 1px solid #ddd;
+    border-top: none;
+    border-bottom: none;
+    height: 100vh;
+    width: 70%;
+    height: 100vh;
+    padding: 20px 30px 10px 30px;
+    overflow-y: auto;
+  }
+
+  .side-container {
+    width: 30%;
+    height: 100vh;
+    padding: 20px;
+    overflow-y: auto;
+  }
+}

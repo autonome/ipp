@@ -1,0 +1,48 @@
+.navbar {
+  height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+
+  .logo {
+    a {
+      display: block;
+    }
+  }
+
+  .item-image {
+    width: 30px;
+    height: 30px;
+    display: block;
+  }
+
+  .nav-items {
+    display: flex;
+    flex-direction: column;
+    margin: auto 0;
+    gap: 20px;
+
+    a {
+      color: #aaa;
+      display: flex;
+      justify-content: center;
+
+      &:hover {
+        color: var(--primary-color);
+      }
+    }
+
+    .separator {
+      border: 1px solid #eee;
+      width: 100%;
+    }
+  }
+
+  .user {
+    height: 30px;
+
+    button {
+      padding: 0;
+    }
+  }
+}

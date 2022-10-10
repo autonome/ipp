@@ -1,0 +1,38 @@
+.new-blog-page {
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    border: none;
+    outline: none;
+    font-size: 30px;
+    padding: 15px;
+    color: #444;
+
+    &:focus {
+      border-left: 1px solid #ccc;
+    }
+  }
+
+  .newblog-editor {
+    border: 1px solid #ccc;
+    height: calc(100vh - 160px);
+    // padding: 0 0 0 12px;
+    font-size: 16px;
+
+    * {
+      font-family: 'Consolas';
+    }
+
+    .CodeMirror {
+      height: calc(100vh - 162px);
+    }
+  }
+
+  .submit {
+    margin: 10px 0 0 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+}
