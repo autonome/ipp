@@ -67,7 +67,6 @@ api.post('https://api.pinata.cloud/pinning/pinFileToIPFS', data, {
     'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
   },
 }).then(res => {
-  console.log(res.data);
 }, err => {
   console.error(err);
 });

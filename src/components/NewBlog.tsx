@@ -25,7 +25,7 @@ const NewBlog = (props: INewBlog) => {
   const [title, setTitle] = useState<string>("");
   const [body, setBody] = useState<string>("");
 
-  const {uuid} = useParams();
+  const { uuid } = useParams();
   const blogs = useSelector<any, IBlog[]>((state) => state.db.Blogs);
   const [curBlog, setCurBlog] = useState<IBlog | undefined>(undefined);
 
@@ -46,7 +46,7 @@ const NewBlog = (props: INewBlog) => {
       NotificationManager.warning("Please input the title", "Warn");
       return;
     }
-    
+
     if (!removeHtmlTags(body)) {
       NotificationManager.warning("Please input the text", "Warn");
       return;
@@ -59,28 +59,30 @@ const NewBlog = (props: INewBlog) => {
       Title: title,
       Body: body,
       Creator: account.toLowerCase(),
-      BodyCID: ''
+      BodyCID: "",
     };
 
     dispatch(createBlog(blog))
       .unwrap()
       .then((blog) => {
         // handle result here
-        NotificationManager.success(`"${blog.Title}" ${uuid ? "Updated" : "Created"}`, "Blog Created");
+        NotificationManager.success(
+          `"${blog.Title}" ${uuid ? "Updated" : "Created"}`,
+          "Blog Created"
+        );
         navigate("/main");
-        console.log({ blog });
         dispatch(setLoading(false));
       })
       .catch((rejectedValueOrSerializedError) => {
         // handle error here
-        console.log({ rejectedValueOrSerializedError });
+        console.error({ rejectedValueOrSerializedError });
         dispatch(setLoading(false));
       });
   };
 
   const onClose = () => {
     navigate("/main/blogs/" + uuid);
-  }
+  };
 
   return (
     <div className="new-blog-page">
@@ -99,7 +101,7 @@ const NewBlog = (props: INewBlog) => {
         value={body}
         options={{
           lineNumbers: true,
-          mode: 'markdown'
+          mode: "markdown",
         }}
         onBeforeChange={(editor, data, value) => {
           setBody(value);
@@ -112,7 +114,9 @@ const NewBlog = (props: INewBlog) => {
           {uuid ? "Update" : "Publish"}
         </Button>
         {uuid && (
-          <Button variant="outlined" color="info" onClick={onClose}>Close</Button>
+          <Button variant="outlined" color="info" onClick={onClose}>
+            Close
+          </Button>
         )}
       </div>
     </div>
