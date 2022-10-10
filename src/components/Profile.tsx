@@ -33,7 +33,6 @@ const Profile = (props: IProfile) => {
   useEffect(() => {
     setName(currentUser?.Name || "");
     setBio(currentUser?.Bio || "");
-    console.log({user: currentUser});
     setAvatar(null);
   }, [currentUser]);
 
@@ -50,11 +49,9 @@ const Profile = (props: IProfile) => {
       let imageUrl: any = null;
       if (avatar) {
         imageUrl = await dispatch(uploadImage(avatar)).unwrap();
-        console.log({imageUrl});
       } else if (currentUser?.Image) {
         imageUrl = currentUser?.Image;
       }
-      
 
       const user: IUser = {
         Type: "ADD_USER",
@@ -73,12 +70,11 @@ const Profile = (props: IProfile) => {
           // handle result here
           NotificationManager.success("", "Saved");
           navigate("/main");
-          console.log({ user: user });
           dispatch(setLoading(false));
         })
         .catch((rejectedValueOrSerializedError) => {
           // handle error here
-          console.log({ rejectedValueOrSerializedError });
+          console.error({ rejectedValueOrSerializedError });
           dispatch(setLoading(false));
         });
     } catch (ex) {}
@@ -109,7 +105,12 @@ const Profile = (props: IProfile) => {
             src={avatar ? URL.createObjectURL(avatar) : ""}
           />
         ) : (
-          <Avatar name="Avatar" size="200px" round={true} src={currentUser?.Image ? getW3link(currentUser?.Image) : ""} />
+          <Avatar
+            name="Avatar"
+            size="200px"
+            round={true}
+            src={currentUser?.Image ? getW3link(currentUser?.Image) : ""}
+          />
         )}
       </label>
       <TextField

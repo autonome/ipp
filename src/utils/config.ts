@@ -4,7 +4,7 @@ const config = {
   LAST_SYNC_NUMBER: "IPP_LAST_SYNC_NUMBER",
   LAST_SYNC_RECORD: "LAST_SYNC_RECORD_",
   VERSION_LABEL: "VERSION",
-  version: "#6",
+  version: "#7",
   RSS_COUNT: 10
 };
 
