@@ -54,6 +54,7 @@ const SyncWorker = (props: ISyncWorker) => {
   // }, [account]);
 
   useEffect(() => {
+    sync();
     const intervalId = setInterval(() => sync(), 60000);
     return () => clearInterval(intervalId);
   }, [ipnsCid]);
@@ -67,6 +68,7 @@ const SyncWorker = (props: ISyncWorker) => {
 
     // show syncing progress bar
     dispatch(setSyncing(true));
+    dispatch(setLoading(true));
 
     const client = new Web3Storage({
       token: config.REACT_APP_WEB3_STORAGE_API_TOKEN,
@@ -83,7 +85,6 @@ const SyncWorker = (props: ISyncWorker) => {
     // get the latest synced address
     let lastSyncNumber = getStorageItem(config.LAST_SYNC_NUMBER + ipnsCid, 0) || 0;
 
-    dispatch(setLoading(true));
     // reads data from the w3.storage
     setProgress((lastSyncNumber * 100) / (cids.length || 1));
     for (let i = lastSyncNumber; i < cids.length; i++) {
