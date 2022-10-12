@@ -46,14 +46,16 @@ export const decrypt = (ciphertext: any) => {
 export const setStorageItem = (key: string, data: any) => {
   localStorage.setItem(
     config.appID + "_" + key,
-    encryptJson(JSON.stringify(data))
+    // encryptJson(JSON.stringify(data))
+    JSON.stringify(data)
   );
 };
 
 export const getStorageItem = (key: string, defaultVal: any) => {
   try {
     return JSON.parse(
-      decryptJson(localStorage.getItem(config.appID + "_" + key) as string)
+      // decryptJson(localStorage.getItem(config.appID + "_" + key) as string)
+      localStorage.getItem(config.appID + "_" + key) as string
     );
   } catch (e) {
     return defaultVal || false;
@@ -107,9 +109,10 @@ export function convertTitle(str: string) {
 
 export function getW3link(cid: string) {
   // return `https://w3s.link/ipfs/${cid}`;
-  // return `https://${cid}.ipfs.w3s.link/`;
+  return `https://${cid}.ipfs.w3s.link/`;
   // return `https://braindance.mypinata.cloud/ipns/k51qzi5uqu5djrhlp3k6pdu4bsdoc548vshanx5ypadecaxxswwklx0qk4g86x`;
-  return `https://braindance.mypinata.cloud/ipfs/${cid}`;
+  // return `https://braindance.mypinata.cloud/ipfs/${cid}`;
+  // return `https://nftymeta.mypinata.cloud/ipfs/${cid}`;
 }
 
 export function sleep(ms: number) {

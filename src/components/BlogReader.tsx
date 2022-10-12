@@ -19,8 +19,10 @@ const BlogReader = (props: IBlogReader) => {
   );
 
   const [blog, setBlog] = useState<IBlog | undefined>(undefined);
+  const {ipnsCid} = useParams();
 
   useEffect(() => {
+    console.log({blogs});
     const blog1 = blogs.find((b) => b.UUID === uuid);
     setBlog(blog1);
   }, [blogs, uuid]);
@@ -36,9 +38,9 @@ const BlogReader = (props: IBlogReader) => {
       >
         {/* {blog?.Body || ""} */}
       </div>
-      {blog?.Creator === account && (
+      {blog && blog?.Creator === account && (
         <div className="buttons">
-          <Link to={`/main/blogs/${blog.UUID}/edit`}>
+          <Link to={`/main/${ipnsCid}/blogs/${blog.UUID}/edit`}>
             <Button variant="contained" color="success" onClick={onEdit}>
               Edit
             </Button>

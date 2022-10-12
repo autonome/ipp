@@ -1,13 +1,15 @@
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createUser, uploadImage } from "slices/dbSlice";
 import { AppDispatch } from "slices/store";
 import { NotificationManager } from "./Notification";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Avatar from "react-avatar";
 import { setLoading } from "slices/viewState";
-import { getW3link } from "utils/helper";
+import { getStorageItem, getW3link } from "utils/helper";
+import * as Name from "w3name";
+import config from "utils/config";
 
 interface IProfile {}
 
@@ -20,7 +22,7 @@ const Profile = (props: IProfile) => {
     (state) => state.web3.selectedAddress
   );
   const [avatar, setAvatar] = useState<File | null>(null);
-
+  const {ipnsCid} = useParams();
   const users = useSelector<any, { [key: string]: IUser }>(
     (state) => state.db.Users
   );
@@ -44,11 +46,12 @@ const Profile = (props: IProfile) => {
 
     try {
       dispatch(setLoading(true));
+      const myIpnsCid = getStorageItem(config.IPNS_DATA + account, "");
 
       // save avatar
       let imageUrl: any = null;
       if (avatar) {
-        imageUrl = await dispatch(uploadImage(avatar)).unwrap();
+        imageUrl = await dispatch(uploadImage({file: avatar, ipnsCid: myIpnsCid})).unwrap();
       } else if (currentUser?.Image) {
         imageUrl = currentUser?.Image;
       }
@@ -64,12 +67,12 @@ const Profile = (props: IProfile) => {
         user.Image = imageUrl;
       }
 
-      dispatch(createUser(user))
+      dispatch(createUser({user, ipnsCid: myIpnsCid}))
         .unwrap()
         .then((user) => {
           // handle result here
           NotificationManager.success("", "Saved");
-          navigate("/main");
+          navigate(`/main/${ipnsCid}`);
           dispatch(setLoading(false));
         })
         .catch((rejectedValueOrSerializedError) => {
@@ -119,7 +122,15 @@ const Profile = (props: IProfile) => {
         variant="standard"
         size="small"
         onChange={(e: any) => setName(e.target.value)}
-        value={name}
+        value={name || ""}
+        className="name"
+      />
+      <TextField
+        fullWidth
+        label="IPNS"
+        variant="standard"
+        size="small"
+        value={getStorageItem(config.IPNS_DATA + account, "") || ""}
         className="name"
       />
       <TextField
@@ -127,7 +138,7 @@ const Profile = (props: IProfile) => {
         label="Wallet"
         variant="standard"
         size="small"
-        value={account}
+        value={account || ""}
         className="wallet"
       />
       <TextField
@@ -139,7 +150,7 @@ const Profile = (props: IProfile) => {
         maxRows={30}
         size="small"
         onChange={(e: any) => setBio(e.target.value)}
-        value={bio}
+        value={bio || ""}
       />
       <div className="submit">
         <Button variant="contained" onClick={onSave} fullWidth>

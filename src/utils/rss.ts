@@ -110,6 +110,7 @@ export async function updateRss() {
   // name: k51qzi5uqu5dg77idvtml88k2bc6scmi9aftri6nub8f7k73fjbiw8xau3xe46
   // path: https://k51qzi5uqu5dg77idvtml88k2bc6scmi9aftri6nub8f7k73fjbiw8xau3xe46.ipns.dweb.link/
   //       https://k51qzi5uqu5dg77idvtml88k2bc6scmi9aftri6nub8f7k73fjbiw8xau3xe46.ipns.w3s.link/
+  //       https://k51qzi5uqu5div70qnyjfu5y0mwzcqs2fegxnq2fafo5oy145lwsb369mqyjir.ipns.w3s.link/
   const bytes = [
     8, 1, 18, 64, 156, 104, 197, 108, 98, 238, 128, 116, 13, 126, 208, 222, 80,
     194, 183, 170, 167, 73, 250, 124, 95, 102, 184, 215, 105, 153, 34, 130, 205,

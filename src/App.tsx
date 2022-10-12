@@ -8,6 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import SyncWorker from 'components/SyncWorker';
 import { connectWallet } from 'slices/web3Slice';
 import { AppDispatch } from 'slices/store';
+import {
+  HashRouter as Router,
+} from "react-router-dom";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -19,8 +22,9 @@ function App() {
   
   return (
     <div className="App">
-      <SyncWorker />
-      <MainLayout />
+      <Router>
+        <MainLayout />
+      </Router>
       <NotificationContainer />
       {loading && <Loader />}
     </div>
