@@ -53,7 +53,8 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
-    "upload": "node ./scripts/upload.js"
+    "upload": "node ./scripts/upload_web3.js",
+    "upload_pinata": "node ./scripts/upload_pinata.js"
   },
   "eslintConfig": {
     "extends": [
