@@ -7,7 +7,7 @@ import { AppDispatch } from "slices/store";
 import { useDispatch, useSelector } from "react-redux";
 import { resetFromLocalStorage } from "slices/dbSlice";
 import { LinearProgress } from "@mui/material";
-import { setSyncing } from "slices/viewState";
+import { setLoading, setSyncing } from "slices/viewState";
 import { fetchIPNSFromName, getCIDsFromIPNS } from "utils/web3.storage";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -72,7 +72,7 @@ const SyncWorker = (props: ISyncWorker) => {
       token: config.REACT_APP_WEB3_STORAGE_API_TOKEN,
     } as Service);
 
-    setProgress(-1);
+    setProgress(1);
 
     // gets all cids uploaded to this ipns
     const ipnsData = await fetchIPNSFromName(ipnsCid) || [];
@@ -83,6 +83,7 @@ const SyncWorker = (props: ISyncWorker) => {
     // get the latest synced address
     let lastSyncNumber = getStorageItem(config.LAST_SYNC_NUMBER + ipnsCid, 0) || 0;
 
+    dispatch(setLoading(true));
     // reads data from the w3.storage
     setProgress((lastSyncNumber * 100) / (cids.length || 1));
     for (let i = lastSyncNumber; i < cids.length; i++) {
@@ -115,6 +116,7 @@ const SyncWorker = (props: ISyncWorker) => {
     dispatch(resetFromLocalStorage({ lastSyncNumber, name: ipnsCid }));
     dispatch(setSyncing(false));
     setProgress(0);
+    dispatch(setLoading(false));
 
     // setTimeout(sync, 60000);
   };
