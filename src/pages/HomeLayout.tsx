@@ -52,7 +52,7 @@ const HomeLayout = (props: IHomeLayout) => {
       <NavBar />
 
       <div className="main-container">
-        {ipnsCid && (
+        {ipnsCid  && ipnsCid !== "undefined" && (
           <Routes>
             {routes.map((e) => (
               <Route

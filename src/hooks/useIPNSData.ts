@@ -9,7 +9,7 @@ const useIPNSData = () => {
   const [ipnsData, setIpnsData] = useState<number[]>([]);
   useEffect(() => {
     (async function() {
-      if (!ipnsCid) {
+      if (!ipnsCid || ipnsCid === "undefined") {
         return;
       }
 

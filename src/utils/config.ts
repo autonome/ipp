@@ -6,7 +6,7 @@ const config = {
   LAST_SYNC_RECORD: "LAST_SYNC_RECORD_",
   IPNS_DATA: "IPNS_DATA_",
   VERSION_LABEL: "VERSION",
-  version: "#7",
+  version: "#8",
   RSS_COUNT: 10
 };
 

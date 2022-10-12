@@ -54,11 +54,12 @@ const SyncWorker = (props: ISyncWorker) => {
   // }, [account]);
 
   useEffect(() => {
-    sync();
+    const intervalId = setInterval(() => sync(), 60000);
+    return () => clearInterval(intervalId);
   }, [ipnsCid]);
 
   const sync = async () => {
-    if (!ipnsCid) {
+    if (!ipnsCid || ipnsCid === "undefined") {
       return;
     }
 
@@ -81,13 +82,6 @@ const SyncWorker = (props: ISyncWorker) => {
 
     // get the latest synced address
     let lastSyncNumber = getStorageItem(config.LAST_SYNC_NUMBER + ipnsCid, 0) || 0;
-
-    // check if the source code has been changed
-    const version = getStorageItem(config.VERSION_LABEL, "") || "";
-    if (version !== config.version) {
-      lastSyncNumber = 0;
-      setStorageItem(config.VERSION_LABEL, config.version);
-    }
 
     // reads data from the w3.storage
     setProgress((lastSyncNumber * 100) / (cids.length || 1));

@@ -122,7 +122,7 @@ const Profile = (props: IProfile) => {
         variant="standard"
         size="small"
         onChange={(e: any) => setName(e.target.value)}
-        value={name}
+        value={name || ""}
         className="name"
       />
       <TextField
@@ -130,7 +130,7 @@ const Profile = (props: IProfile) => {
         label="IPNS"
         variant="standard"
         size="small"
-        value={getStorageItem(config.IPNS_DATA + account, "")}
+        value={getStorageItem(config.IPNS_DATA + account, "") || ""}
         className="name"
       />
       <TextField
@@ -138,7 +138,7 @@ const Profile = (props: IProfile) => {
         label="Wallet"
         variant="standard"
         size="small"
-        value={account}
+        value={account || ""}
         className="wallet"
       />
       <TextField
@@ -150,7 +150,7 @@ const Profile = (props: IProfile) => {
         maxRows={30}
         size="small"
         onChange={(e: any) => setBio(e.target.value)}
-        value={bio}
+        value={bio || ""}
       />
       <div className="submit">
         <Button variant="contained" onClick={onSave} fullWidth>

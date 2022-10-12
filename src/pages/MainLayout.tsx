@@ -33,6 +33,13 @@ const MainLayout = (props: IMainLayout) => {
       }
 
       dispatch(setLoading(true));
+
+      const version = getStorageItem(config.VERSION_LABEL, "") || "";
+      if (version !== config.version) {
+        window.localStorage.clear();
+        setStorageItem(config.VERSION_LABEL, config.version);
+      }
+
       let ipnsCid1 = (getStorageItem(config.IPNS_DATA + account, "") || "");
       if (!ipnsCid1) {
         const ipnsData = await fetchIPNS(account);
@@ -60,7 +67,7 @@ const MainLayout = (props: IMainLayout) => {
           element={React.createElement(e.component)}
         />
       ))}
-      <Route path="*" element={<Navigate to={`/main/${ipnsCid}`} />} />
+      <Route path="*" element={<Navigate to={`/main/${ipnsCid}/`} />} />
     </Routes>
   );
 };
