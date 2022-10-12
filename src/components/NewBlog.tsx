@@ -25,6 +25,7 @@ const NewBlog = (props: INewBlog) => {
 
   const [title, setTitle] = useState<string>("");
   const [body, setBody] = useState<string>("");
+  const [touched, setTouched] = useState(false);
 
   const { uuid } = useParams();
   const blogs = useSelector<any, IBlog[]>((state) => state.db.Blogs);
@@ -32,10 +33,12 @@ const NewBlog = (props: INewBlog) => {
   const {ipnsCid} = useParams();
 
   useEffect(() => {
-    const blog1 = blogs.find((b) => b.UUID === uuid);
-    setCurBlog(blog1);
-    setTitle(blog1?.Title || "");
-    setBody(blog1?.Body || "");
+    if (!touched) {
+      const blog1 = blogs.find((b) => b.UUID === uuid);
+      setCurBlog(blog1);
+      setTitle(blog1?.Title || "");
+      setBody(blog1?.Body || "");
+    }
   }, [blogs, uuid]);
 
   const onCreate = () => {
@@ -93,7 +96,10 @@ const NewBlog = (props: INewBlog) => {
         className="title"
         type="text"
         placeholder="Title"
-        onChange={(e: any) => setTitle(e.target.value)}
+        onChange={(e: any) => {
+          setTitle(e.target.value);
+          setTouched(true);
+        }}
         value={title}
       />
       {/* <MediumEditor
@@ -108,12 +114,13 @@ const NewBlog = (props: INewBlog) => {
         }}
         onBeforeChange={(editor, data, value) => {
           setBody(value);
+          setTouched(true);
         }}
         onChange={(editor, data, value) => {}}
         className="newblog-editor"
       />
       <div className="submit">
-        <Button variant="contained" color="success" onClick={onCreate}>
+        <Button variant="contained" color="success" onClick={onCreate} disabled={!touched}>
           {uuid ? "Update" : "Publish"}
         </Button>
         {uuid && (
