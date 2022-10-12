@@ -11,7 +11,8 @@ import { Controlled as CodeMirror } from "react-codemirror2";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
 import "codemirror/mode/markdown/markdown";
-import { removeHtmlTags } from "utils/helper";
+import { getStorageItem, removeHtmlTags } from "utils/helper";
+import config from "utils/config";
 
 interface INewBlog {}
 
@@ -28,6 +29,7 @@ const NewBlog = (props: INewBlog) => {
   const { uuid } = useParams();
   const blogs = useSelector<any, IBlog[]>((state) => state.db.Blogs);
   const [curBlog, setCurBlog] = useState<IBlog | undefined>(undefined);
+  const {ipnsCid} = useParams();
 
   useEffect(() => {
     const blog1 = blogs.find((b) => b.UUID === uuid);
@@ -53,6 +55,7 @@ const NewBlog = (props: INewBlog) => {
     }
 
     dispatch(setLoading(true));
+    const myIpnsCid = getStorageItem(config.IPNS_DATA + account, "");
     const blog: IBlog = {
       Type: uuid ? "UPDATE_BLOG" : "ADD_BLOG",
       UUID: curBlog?.UUID || uuidv4(),
@@ -62,7 +65,7 @@ const NewBlog = (props: INewBlog) => {
       BodyCID: "",
     };
 
-    dispatch(createBlog(blog))
+    dispatch(createBlog({blog, ipnsCid: myIpnsCid}))
       .unwrap()
       .then((blog) => {
         // handle result here
@@ -70,7 +73,7 @@ const NewBlog = (props: INewBlog) => {
           `"${blog.Title}" ${uuid ? "Updated" : "Created"}`,
           "Blog Created"
         );
-        navigate("/main");
+        navigate(`/main/${ipnsCid}`);
         dispatch(setLoading(false));
       })
       .catch((rejectedValueOrSerializedError) => {

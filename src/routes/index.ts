@@ -1,4 +1,5 @@
 import HomeLayout from 'pages/HomeLayout';
+import RedirectPage from 'pages/RedirectPage';
 import Welcome from 'pages/Welcome';
 
 const routes: any[] = [
@@ -7,7 +8,11 @@ const routes: any[] = [
     component: Welcome,
   },
   {
-    path: '/main/*',
+    path: '/main',
+    component: RedirectPage,
+  },
+  {
+    path: '/main/:ipnsCid/*',
     component: HomeLayout,
   },
 ];

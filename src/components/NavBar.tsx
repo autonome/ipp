@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaHome, FaPlus } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -33,6 +33,8 @@ const NavBar = (props: INavBar) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [avatar, setAvatar] = useState<File | null>(null);
+  
+  const {ipnsCid} = useParams();
 
   useEffect(() => {
     setCurrentUser(account ? users[account] : null);
@@ -56,12 +58,12 @@ const NavBar = (props: INavBar) => {
   };
 
   const handleProfile = () => {
-    navigate("/main/profile");
+    navigate(`/main/${ipnsCid}/profile`);
     setAnchorEl(null);
   };
 
   const handleMyBlogs = () => {
-    navigate("/main/myblogs");
+    navigate(`/main/${ipnsCid}/myblogs`);
     setAnchorEl(null);
   };
 
@@ -77,7 +79,7 @@ const NavBar = (props: INavBar) => {
         </a>
       </div>
       <div className="nav-items">
-        <Link to="/main" title="Home">
+        <Link to={`/main/${ipnsCid}`} title="Home">
           <MdOutlineHome size={30} />
         </Link>
         <Link to="/main" title="Help">
@@ -86,7 +88,7 @@ const NavBar = (props: INavBar) => {
         {account && (
           <>
             <div className="separator" />
-            <Link to="/main/new" title="New Blog">
+            <Link to={`/main/${ipnsCid}/new`} title="New Blog">
               <MdOutlineEditLocationAlt size={30} />
             </Link>
           </>

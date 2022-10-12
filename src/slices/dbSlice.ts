@@ -3,6 +3,7 @@ import { convertTitle, getStorageItem } from "utils/helper";
 import { Service, Web3Storage } from "web3.storage";
 import config from "utils/config";
 import { updateRss } from "utils/rss";
+import { addCIDtoIPNS, uploadData } from "utils/web3.storage";
 
 const client = new Web3Storage({
   token: config.REACT_APP_WEB3_STORAGE_API_TOKEN,
@@ -10,36 +11,33 @@ const client = new Web3Storage({
 
 const initialState = {
   Initialized: false,
+  ipnsData: [] as Number[],
   Blogs: [] as IBlog[],
   Users: {} as { [key: string]: IUser },
 } as IDatabase;
 
 export const createBlog = createAsyncThunk(
   "createBlog",
-  async (blog: IBlog, { rejectWithValue }) => {
+  async (data: any, { rejectWithValue }) => {
     try {
+      const {blog, ipnsCid} = data;
       // upload blog body
       let title = "blogbody_" + convertTitle(blog.Title);
-      let blobBody = new File([blog.Body || ""], title, { type: "text/plain" });
-      let cid = await client.put([blobBody], {
-        name: title,
-        maxRetries: 3,
-        wrapWithDirectory: false,
-      });
-      blog.BodyCID = cid;
+      blog.BodyCID = await uploadData(client, title, blog.Body, "text/plain") || "";
       blog.Body = undefined;
 
       // upload blog
       title = "blog_" + convertTitle(blog.Title);
-      let blob = new File([JSON.stringify(blog, null, 2)], title, {
-        type: "application/json",
-      });
-      cid = await client.put([blob], {
-        name: title,
-        maxRetries: 3,
-        wrapWithDirectory: false,
-      });
-      blog.CID = cid;
+      blog.Date = new Date();
+      blog.CID = await uploadData(client, title, blog);
+
+      // add updating to the ipns
+      const ipnsData = getStorageItem(config.IPNS_DATA + ipnsCid, []) || [];
+      if (ipnsData.length === 0) {
+        alert("ipnsData is empty");
+      }
+
+      await addCIDtoIPNS(ipnsData, blog.CID || "");
 
       // update rss
       updateRss();
@@ -52,19 +50,20 @@ export const createBlog = createAsyncThunk(
 
 export const createUser = createAsyncThunk(
   "createUser",
-  async (user: IUser, { rejectWithValue }) => {
+  async (data: any, { rejectWithValue }) => {
     try {
+      const {user, ipnsCid} = data;
       const title = "user_" + convertTitle(user.Wallet);
-      let blob = new File([JSON.stringify(user, null, 2)], title, {
-        type: "application/json",
-      });
-      const rootCid = await client.put([blob], {
-        name: title,
-        maxRetries: 3,
-        wrapWithDirectory: false,
-      });
+      user.CID = await uploadData(client, title, user);
 
-      user.CID = rootCid;
+      // add updating to the ipns
+      const ipnsData = getStorageItem(config.IPNS_DATA + ipnsCid, []) || [];
+      if (ipnsData.length === 0) {
+        alert("ipnsData is empty");
+      }
+
+      await addCIDtoIPNS(ipnsData, user.CID || "");
+
       return user;
     } catch (err: any) {
       return rejectWithValue(err.response.data);
@@ -74,13 +73,23 @@ export const createUser = createAsyncThunk(
 
 export const uploadImage = createAsyncThunk(
   "uploadImage",
-  async (file: File, { rejectWithValue }) => {
+  async (data: any, { rejectWithValue }) => {
     try {
+      const {file, ipnsCid} = data;
       const rootCid = await client.put([file], {
         name: "image_" + new Date().getTime().toString(),
         maxRetries: 3,
         wrapWithDirectory: false,
       });
+
+      // add updating to the ipns
+      const ipnsData = getStorageItem(config.IPNS_DATA + ipnsCid, []) || [];
+      if (ipnsData.length === 0) {
+        alert("ipnsData is empty");
+      }
+
+      await addCIDtoIPNS(ipnsData, rootCid || "");
+
       return rootCid;
     } catch (err: any) {
       return rejectWithValue(err.response.data);
@@ -96,20 +105,24 @@ export const dbSlice = createSlice({
     resetFromLocalStorage: (state: IDatabase, action: PayloadAction<any>) => {
       // dispose individual action
 
-      const startNumber = state.Initialized ? action.payload.lastSyncNumber : 0;
-      const account = state.Initialized ? action.payload.account : "";
+      console.log("resetFromLocalStorage payload: ", action.payload);
+      const startNumber = 0;//state.Initialized ? action.payload.lastSyncNumber : 0;
+      const nameString = action.payload.name;
       const blogs = startNumber > 0 ? state.Blogs : [];
       const users = state.Users;
       const lastSyncNumber =
-        getStorageItem(config.LAST_SYNC_NUMBER + account, 0) || 0;
+        getStorageItem(config.LAST_SYNC_NUMBER + nameString, 0) || 0;
+      console.log("Last synced number in resetFromLocalStorage: ", lastSyncNumber);
+      console.log("Last synced number title in resetFromLocalStorage: ", config.LAST_SYNC_NUMBER + nameString);
       for (let i = startNumber; i < lastSyncNumber; i++) {
         const data =
-          getStorageItem(config.LAST_SYNC_RECORD + account + i, {}) || {};
-        if (!data.Date) {
-          continue;
-        }
+          getStorageItem(config.LAST_SYNC_RECORD + nameString + i, {}) || {};
+        // if (!data.Date) {
+        //   continue;
+        // }
 
         data.Date = new Date(data.Date);
+        console.log({data});
         switch (data.Type) {
           case "ADD_BLOG":
             blogs.push(data);
@@ -138,7 +151,7 @@ export const dbSlice = createSlice({
       state.Blogs = blogs;
       state.Users = users;
       state.Initialized = true;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(

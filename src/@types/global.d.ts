@@ -27,6 +27,7 @@ interface IUser {
 
 interface IDatabase {
   Initialized: boolean;
+  ipnsData: Number[];
   Blogs: IBlog[];
   Users: { [key: string]: IUser; };
 }
