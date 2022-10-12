@@ -45,6 +45,7 @@ const MainLayout = (props: IMainLayout) => {
         const ipnsData = await fetchIPNS(account);
         const name = await Name.from(new Uint8Array(ipnsData));
         ipnsCid1 = name.toString();
+        setStorageItem(config.IPNS_DATA + ipnsCid1, ipnsData);
       }
       setStorageItem(config.IPNS_DATA + account, ipnsCid1);
 

@@ -44,7 +44,6 @@ interface IHomeLayout {}
 
 const HomeLayout = (props: IHomeLayout) => {
   const { ipnsCid } = useParams();
-  const ipnsData = useIPNSData();
 
   return (
     <div className="home-layout">

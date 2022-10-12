@@ -47,6 +47,7 @@ export async function fetchIPNSFromName(ipnsCid: string) {
     uploadObjects.push(upload);
   }
 
+  console.log("Uploaded objects: ", uploadObjects);
   uploadObjects.sort((a, b) => (a.created > b.created ? 1 : -1));
   for (let i = 0; i < uploadObjects.length; i++) {
     const upload = uploadObjects[i];

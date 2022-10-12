@@ -10,6 +10,7 @@ import { LinearProgress } from "@mui/material";
 import { setLoading, setSyncing } from "slices/viewState";
 import { fetchIPNSFromName, getCIDsFromIPNS } from "utils/web3.storage";
 import { useNavigate, useParams } from "react-router-dom";
+import useIPNSData from "hooks/useIPNSData";
 
 interface ISyncWorker {}
 
@@ -23,6 +24,7 @@ const SyncWorker = (props: ISyncWorker) => {
   );
   const [progress, setProgress] = useState(0);
   const {ipnsCid} = useParams();
+  const ipnsData = useIPNSData();
 
   // useEffect(() => {
   //   const lastSyncNumber =
@@ -57,7 +59,7 @@ const SyncWorker = (props: ISyncWorker) => {
     sync();
     const intervalId = setInterval(() => sync(), 60000);
     return () => clearInterval(intervalId);
-  }, [ipnsCid]);
+  }, [ipnsCid, ipnsData]);
 
   const sync = async () => {
     if (!ipnsCid || ipnsCid === "undefined") {
@@ -68,7 +70,7 @@ const SyncWorker = (props: ISyncWorker) => {
 
     // show syncing progress bar
     dispatch(setSyncing(true));
-    dispatch(setLoading(true));
+    // dispatch(setLoading(true));
 
     const client = new Web3Storage({
       token: config.REACT_APP_WEB3_STORAGE_API_TOKEN,
@@ -77,7 +79,6 @@ const SyncWorker = (props: ISyncWorker) => {
     setProgress(1);
 
     // gets all cids uploaded to this ipns
-    const ipnsData = await fetchIPNSFromName(ipnsCid) || [];
     console.log("Stored ipnsData: ", ipnsData);
     const cids = await getCIDsFromIPNS(ipnsData);
     console.log("Stored cids: ", cids);
@@ -117,7 +118,7 @@ const SyncWorker = (props: ISyncWorker) => {
     dispatch(resetFromLocalStorage({ lastSyncNumber, name: ipnsCid }));
     dispatch(setSyncing(false));
     setProgress(0);
-    dispatch(setLoading(false));
+    // dispatch(setLoading(false));
 
     // setTimeout(sync, 60000);
   };
