@@ -30,4 +30,5 @@ interface IDatabase {
   ipnsData: Number[];
   Blogs: IBlog[];
   Users: { [key: string]: IUser; };
+  syncedVersion: number;
 }

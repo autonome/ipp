@@ -11,6 +11,7 @@ const client = new Web3Storage({
 
 const initialState = {
   Initialized: false,
+  syncedVersion: 0,
   ipnsData: [] as Number[],
   Blogs: [] as IBlog[],
   Users: {} as { [key: string]: IUser },
@@ -151,6 +152,9 @@ export const dbSlice = createSlice({
       state.Blogs = blogs;
       state.Users = users;
       state.Initialized = true;
+    },
+    setSyncFlag: (state: IDatabase, action: PayloadAction) => {
+      state.syncedVersion = state.syncedVersion + 1;
     }
   },
   extraReducers: (builder) => {
@@ -161,6 +165,6 @@ export const dbSlice = createSlice({
   },
 });
 
-export const { resetFromLocalStorage } = dbSlice.actions;
+export const { resetFromLocalStorage, setSyncFlag } = dbSlice.actions;
 
 export default dbSlice.reducer;
