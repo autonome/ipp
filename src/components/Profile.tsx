@@ -1,7 +1,7 @@
 import { Button, TextField } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createUser, uploadImage } from "slices/dbSlice";
+import { createUser, setSyncFlag, uploadImage } from "slices/dbSlice";
 import { AppDispatch } from "slices/store";
 import { NotificationManager } from "./Notification";
 import { useNavigate, useParams } from "react-router-dom";
@@ -74,6 +74,7 @@ const Profile = (props: IProfile) => {
           NotificationManager.success("", "Saved");
           navigate(`/main/${ipnsCid}`);
           dispatch(setLoading(false));
+          dispatch(setSyncFlag());
         })
         .catch((rejectedValueOrSerializedError) => {
           // handle error here

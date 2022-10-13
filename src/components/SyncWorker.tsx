@@ -19,47 +19,18 @@ const SyncWorker = (props: ISyncWorker) => {
   const isSyncing = useSelector<any, boolean>(
     (state) => state.viewState.syncing
   );
-  const account = useSelector<any, string | null>(
-    (state) => state.web3.selectedAddress
+  const syncedVersion = useSelector<any, number>(
+    (state) => state.db.syncedVersion
   );
   const [progress, setProgress] = useState(0);
   const {ipnsCid} = useParams();
   const ipnsData = useIPNSData();
 
-  // useEffect(() => {
-  //   const lastSyncNumber =
-  //     getStorageItem(config.LAST_SYNC_NUMBER + account, 0) || 0;
-  //   dispatch(resetFromLocalStorage({ lastSyncNumber, account }));
-  //   sync();
-  // }, [account]);
-
-  // useEffect(() => {
-  //   (async function() {
-  //     if (!account) {
-  //       return;
-  //     }
-
-  //     let ipnsData = (getStorageItem(config.ACCOUNT_IPNS + account, []) || []) as number[];
-  //     if (!ipnsData.length) {
-  //       ipnsData = await fetchIPNS(account);
-  //       setStorageItem(config.ACCOUNT_IPNS + account, ipnsData)
-  //     }
-
-  //     dispatch(setIPNSData(ipnsData));
-
-  //     // redirect page
-  //     const name = await Name.from(new Uint8Array(ipnsData));
-  //     console.log("Reditect url: ", `/main/${name.toString()}`);
-  //     navigate(`/main/${name.toString()}`);
-      
-  //   })();
-  // }, [account]);
-
   useEffect(() => {
     sync();
     const intervalId = setInterval(() => sync(), 60000);
     return () => clearInterval(intervalId);
-  }, [ipnsCid, ipnsData]);
+  }, [ipnsCid, ipnsData, syncedVersion]);
 
   const sync = async () => {
     if (!ipnsCid || ipnsCid === "undefined") {

@@ -1,7 +1,7 @@
 import { Button, TextField } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createBlog } from "slices/dbSlice";
+import { createBlog, setSyncFlag } from "slices/dbSlice";
 import { AppDispatch } from "slices/store";
 import { NotificationManager } from "./Notification";
 import { v4 as uuidv4 } from "uuid";
@@ -78,6 +78,7 @@ const NewBlog = (props: INewBlog) => {
         );
         navigate(`/main/${ipnsCid}`);
         dispatch(setLoading(false));
+        dispatch(setSyncFlag());
       })
       .catch((rejectedValueOrSerializedError) => {
         // handle error here
